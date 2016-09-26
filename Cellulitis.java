@@ -1,4 +1,4 @@
-/*
+/**
  * Cellulitis
  * by Menno Hofste
  * and Joost Roordink
@@ -35,7 +35,7 @@ public class Cellulitis {
     
     //for the first input line(type, length, generations)
     public void readGeneral() {
-        //TODO read the general input (up to the initial configuration)
+      
         type = sc.next();
         length = sc.nextInt();
         numGen = sc.nextInt();
@@ -47,12 +47,12 @@ public class Cellulitis {
         }
         
         readInitial(); //go to the second line
-        //END TODO
+       
     }
     
     //read the secodn input line
     public void readInitial() {
-        //TODO read the initial configuration (build the first currentGeneration)
+       
         String init = sc.next(); //not needed to actually save this, but needed to get the input window up
         //and we dont need the text anyway
         
@@ -90,7 +90,7 @@ public class Cellulitis {
             rule7 = 1;
             rule8 = 0;
         }
-        //END TODO
+      
     }
     
     
@@ -98,7 +98,7 @@ public class Cellulitis {
         String init = sc.next(); //this takes the last string(init_end) out of the scanner and brings up the next input
         //otherwise nexInt() gets either no input or a type mismatch(not sure which of the two it is)
         
-        //TODO read the ruleset (only implement in case of an universal automaton)
+    
         rule1 = sc.nextInt();
         rule2 = sc.nextInt();
         rule3 = sc.nextInt();
@@ -107,38 +107,35 @@ public class Cellulitis {
         rule6 = sc.nextInt();
         rule7 = sc.nextInt();
         rule8 = sc.nextInt();
-        //END TODO
+     
     }
     
     boolean newCellValueByA(int k) {
-        // TODO return the value {true, false} of cell number k
-        // for the next generation according to the rules of A
+    
         
         
         
-        //rules of A are a preset of the rules for the universal automaton
-        //and are thus handled as setting the correct rules to active
-        //and the doing the same as with the universal one
-        //the method exists only to explain why we deviated from the assignment by not using this method
-        return false;
+       //this could be done by calling newCellValueByRules directly
+        //but the assignment says we have to define and use this method
+        //so we've not got code that's not as efficietn and messier than it could be
+        //(we asked wether we could leave these methods out, the answer was taht we should do it like this)
+        return newCellValueByRules(k);
         
-        //END TODO
+      
     }
     
     boolean newCellValueByB(int k) {
-        // TODO return the value {true, false} of cell number k
-        // for the next generation according to the rules of B
+      
         
         
-        //see newCellValueByA, exact same reason it's empty
-        return false;
+        //see newCellValueByA, exact same thing
+        return newCellValueByRules(k);
         
-        //END TODO
+    
     }
     
     boolean newCellValueByRules(int k){
-        // TODO return the value {true, false} of cell number k
-        // for the next generation according to the universal automatons rules
+       
         
         
         //the patterns for the rules, each one corresponds to a rule above
@@ -204,7 +201,7 @@ public class Cellulitis {
         
         
         
-        //END TODO
+    
     }
     
     
@@ -223,12 +220,12 @@ public class Cellulitis {
         
         System.out.println(output); //and print the line
         
-        //END TODO
+     
     }
     
     
     public void computeNextGeneration() {
-        //TODO compute the nextGeneration and update the currentGeneration.
+      
         boolean[] newGeneration = new boolean[length + 2]; //second array for the new generation
         
         newGeneration[0] = false; //outter values that are always false
@@ -236,7 +233,13 @@ public class Cellulitis {
         
         //go through all others and chekc if they are dead or alive
         for(int i = 1; i < currentGeneration.length - 1; i++) { 
-            if(newCellValueByRules(i)){
+            
+            //the if checks wether automaton A,B or universal are used and checks and relevent rules
+            //due to how the newCellValueBy... methods work, this could also be done using only newCellByRules
+            //but the assignment says we must define and use seperate methods for A and B as well
+            //resulting in code that's both less efficient and messier, but the assignment says so...
+            //(we asked wether we could leave those two methods out and the answer was that we should do it like this)
+            if((newCellValueByRules(i) && type.equals("U")) || (newCellValueByA(i) && type.equals("A")) || (newCellValueByB(i) && type.equals("B")) ){
                 newGeneration[i] = true;
             } else {
                 newGeneration[i] = false;
@@ -246,7 +249,7 @@ public class Cellulitis {
         
         currentGeneration = newGeneration; //update the currentgeneration to be the new one
         
-        //END TODO
+
     }
     
     
@@ -254,7 +257,7 @@ public class Cellulitis {
     //so first makes the input part do its thing
     //and the the actual running of all the generations
     public void run() {
-        //TODO implement the procedure for the assignment
+        
         readGeneral(); //deals with all the input. goes to readInitial and, if needed, readRules as well
         
         //while there's still a generation that needs to be processed, do so and print its line
@@ -265,15 +268,9 @@ public class Cellulitis {
             
             numGen = numGen - 1; //reduce the number of generations that still need processing by 1
         }
-        
-        
-        //END TODO
+
     }
-    
-    //TODO more methods if nescessairy
-    
-    //END TODO
-    
+
     
     public static void main(String[] args) {
         (new Cellulitis()).run();
