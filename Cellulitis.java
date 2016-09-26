@@ -1,6 +1,6 @@
 /* Cellulitis
  * by Menno Hofste
-  and Joost Roordink
+ * and Joost Roordink
  */
 
 import java.util.*;
