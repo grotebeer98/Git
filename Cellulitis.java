@@ -1,5 +1,4 @@
-/**
- * Cellulitis
+/* Cellulitis
  * by Menno Hofste
  * and Joost Roordink
  */
@@ -7,10 +6,11 @@
 import java.util.*;
 
 
-//the general idea of how the program works is that it asks for the input
-//and then prints a line for the first generation
-//then calcualtes to next generation and prints the one
-//and so on until we've reached the needed amount of generations
+/* the general idea of how the program works is that it asks for the input
+ * and then prints a line for the first generation
+ * then calcualtes to next generation and prints the one
+ * and so on until we've reached the needed amount of generations
+ */
 public class Cellulitis {
     boolean[] currentGeneration;
     Scanner sc = new Scanner(System.in);
@@ -21,7 +21,7 @@ public class Cellulitis {
     int numGen; //number of generations it has to run
     
     
-    //ints to store wether a rule is active or not(for universal automaton)
+    //ints to store whether a rule is active or not (for universal automaton)
     int rule1;
     int rule2;
     int rule3;
@@ -33,14 +33,15 @@ public class Cellulitis {
     
     
     
-    //for the first input line(type, length, generations)
+    //for the first input line (type, length, generations)
     public void readGeneral() {
       
         type = sc.next();
         length = sc.nextInt();
         numGen = sc.nextInt();
         
-        currentGeneration = new boolean[length + 2]; //Making boolean 2 longer so first and last element can always be false
+        //Making boolean 2 longer so first and last element can always be false
+        currentGeneration = new boolean[length + 2]; 
         
         for(int i = 0; i < currentGeneration.length; i++) { //Set every element to false at the start
             currentGeneration[i] = false;
@@ -50,11 +51,11 @@ public class Cellulitis {
        
     }
     
-    //read the secodn input line
+    //read the second input line
     public void readInitial() {
        
         String init = sc.next(); //not needed to actually save this, but needed to get the input window up
-        //and we dont need the text anyway
+        //and we do not need the text
         
         
         //if an int has been given, set the corresponding place to being alive
@@ -67,7 +68,7 @@ public class Cellulitis {
         }
         
         
-        //either go to the third input lin if universal
+        //either go to the third input line if universal
         //or set the rules to the right preset if not
         if(type.equals("U")) { //ask for input for rules
             readRules();
@@ -95,8 +96,8 @@ public class Cellulitis {
     
     
     public void readRules() {
-        String init = sc.next(); //this takes the last string(init_end) out of the scanner and brings up the next input
-        //otherwise nexInt() gets either no input or a type mismatch(not sure which of the two it is)
+        String init = sc.next(); //this takes the last string(init_end) out of the scanner and brings
+        //up the next input otherwise nexInt() gets either no input or a type mismatch
         
     
         rule1 = sc.nextInt();
@@ -115,10 +116,12 @@ public class Cellulitis {
         
         
         
-       //this could be done by calling newCellValueByRules directly
-        //but the assignment says we have to define and use this method
-        //so we've not got code that's not as efficietn and messier than it could be
-        //(we asked wether we could leave these methods out, the answer was taht we should do it like this)
+        /* this could be done by calling newCellValueByRules directly
+         * but the assignment says we have to define and use this method
+         * so we've got no code that's not as efficient and messier than it could be
+         * (we asked whether we could leave these methods out, 
+         * the answer was that we should do it like this)
+         */
         return newCellValueByRules(k);
         
       
@@ -128,7 +131,7 @@ public class Cellulitis {
       
         
         
-        //see newCellValueByA, exact same thing
+        //see newCellValueByA, same story
         return newCellValueByRules(k);
         
     
@@ -138,12 +141,13 @@ public class Cellulitis {
        
         
         
-        //the patterns for the rules, each one corresponds to a rule above
-        //these patterns mean that of the neighbourhood of a cell is equal to the pattern
-        //the ceell becomes alive in the next generation, and otherwise dead
-        //
-        //commented letter behind are rules applying to that scenarios ruleset
-        //in other words: the given rules for A and B come down to those neighbourhouds resulting in true
+        /* the patterns for the rules, each one corresponds to a rule above
+         * these patterns mean that of the neighbourhood of a cell is equal to the pattern
+         * the ceell becomes alive in the next generation, and otherwise dead
+         * 
+         * commented letter behind are rules applying to that scenarios ruleset
+         * in other words: the given rules for A and B come down to those neighbourhouds resulting in true
+         */
         String p1 = "000";
         String p2 = "001"; //A,B
         String p3 = "010"; //B
@@ -155,30 +159,30 @@ public class Cellulitis {
         
         
         
-        //figure what the neughbours are
+        //figure what the neighbours are
         String neighbourhood = ""; //empty string
         if(currentGeneration[k - 1]){ //if left neighbour alive, add 1 else 0 to the string
-            neighbourhood = neighbourhood + 1;
+            neighbourhood += 1;
         } else {
-            neighbourhood = neighbourhood + 0;
+            neighbourhood += 0;
         }
         
         if(currentGeneration[k]){//same for itself
-            neighbourhood = neighbourhood + 1;
+            neighbourhood += 1;
         } else {
-            neighbourhood = neighbourhood + 0;
+            neighbourhood += 0;
         }
         
         if(currentGeneration[k+1]){//and the other neughbour
-            neighbourhood = neighbourhood + 1;
+            neighbourhood +=1;
         } else {
-            neighbourhood = neighbourhood + 0;
+            neighbourhood += 0;
         }
         
         
         
         //check which pattern it is, and if the relevant ruleset is set to active
-        //if it is, return true(cell is aive) else false(cell is dead)
+        //if it is, return true(cell is alive) else false(cell is dead)
         if(neighbourhood.equals(p1) && rule1 == 1){
             return true;
         } else if(neighbourhood.equals(p2) && rule2 == 1){
@@ -228,18 +232,20 @@ public class Cellulitis {
       
         boolean[] newGeneration = new boolean[length + 2]; //second array for the new generation
         
-        newGeneration[0] = false; //outter values that are always false
+        newGeneration[0] = false; //outermost values are always false
         newGeneration[length + 1] = false;
         
-        //go through all others and chekc if they are dead or alive
+        //go through all others and check if they are dead or alive
         for(int i = 1; i < currentGeneration.length - 1; i++) { 
             
-            //the if checks wether automaton A,B or universal are used and checks and relevent rules
-            //due to how the newCellValueBy... methods work, this could also be done using only newCellByRules
-            //but the assignment says we must define and use seperate methods for A and B as well
-            //resulting in code that's both less efficient and messier, but the assignment says so...
-            //(we asked wether we could leave those two methods out and the answer was that we should do it like this)
-            if((newCellValueByRules(i) && type.equals("U")) || (newCellValueByA(i) && type.equals("A")) || (newCellValueByB(i) && type.equals("B")) ){
+            /* the if checks wether automaton A,B or universal are used and checks and relevent rules
+             * due to how the newCellValueBy... methods work, this could also be done using only newCellByRules
+             * but the assignment says we must define and use seperate methods for A and B as well
+             * resulting in code that's both less efficient and messier, but the assignment says so...
+             * (we asked wether we could leave those two methods out and the answer was that we should do it like this)
+             */
+            if((newCellValueByRules(i) && type.equals("U")) || (newCellValueByA(i) && type.equals("A")) || 
+               (newCellValueByB(i) && type.equals("B")) ){
                 newGeneration[i] = true;
             } else {
                 newGeneration[i] = false;
@@ -253,14 +259,15 @@ public class Cellulitis {
     }
     
     
-    //runs the program in general
-    //so first makes the input part do its thing
-    //and the the actual running of all the generations
+    /* runs the program in general
+     * so first makes the input part do its thing
+     * and the the actual running of all the generations
+     */
     public void run() {
         
         readGeneral(); //deals with all the input. goes to readInitial and, if needed, readRules as well
         
-        //while there's still a generation that needs to be processed, do so and print its line
+        //while there's still a generation that needs to be processed, do so and print it's line
         while(numGen>0) {
             draw(); //current generation gets its line
             
